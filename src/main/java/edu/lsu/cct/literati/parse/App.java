@@ -33,7 +33,7 @@ public class App {
         ParsingResult<String> result = new RecoveringParseRunner(parser.DataDefinition()).run(input);
         assert result.parseTreeRoot != null;
 //        System.out.println(input + " = " + result.parseTreeRoot.getValue() + '\n');
-        System.out.println(printNodeTree(result) + '\n');
+//        System.out.println(printNodeTree(result) + '\n');
 
         System.out.printf("\n\nGot %d Lines...value stack type is %s\n", result.valueStack.size(), result.valueStack.pop().getClass());
 

@@ -77,11 +77,11 @@ public class GoogleBooksGrammar extends BaseParser<Object> {
     }
     
     Rule JunkChars(){
-        return AnyOf("•—■");
+        return AnyOf("•—■^»«„*");
     }
     
     Rule Punctuation() {
-        return AnyOf("=+-,.;':\"()&%$#@!");
+        return AnyOf("=+-,/.;':\"()&%$#@!");
     }
     
     Rule Alpha() {

@@ -38,7 +38,7 @@ public class App {
 //        System.out.println(input + " = " + result.parseTreeRoot.getValue() + '\n');
 //        System.out.println(printNodeTree(result) + '\n');
 
-        System.out.printf("\n\nLines: %d | stack type: %s |\n", result.valueStack.size(), result.valueStack.pop().getClass());
+        System.out.printf("\n\nLines: %d | stack type: %s | Failed Matchers: %d\n", result.valueStack.size(), result.valueStack.pop().getClass(), result.parseErrors.size());
 
         TeiBuilder tei = new TeiBuilder(result.valueStack);
         tei.WriteFile("tmp.txt", tei.BuildOutput());

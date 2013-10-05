@@ -4,6 +4,9 @@
  */
 package edu.lsu.cct.literati.parse;
 
+import edu.lsu.cct.literati.parse.ast.LineNode;
+import edu.lsu.cct.literati.parse.ast.Node;
+import edu.lsu.cct.literati.parse.ast.TextNode;
 import java.io.FileWriter;
 import java.text.Normalizer;
 import java.io.IOException;
@@ -30,12 +33,12 @@ public class App {
                 readFile(args[0], Charset.forName("UTF-8")));
 
         GoogleBooksGrammar parser = Parboiled.createParser(GoogleBooksGrammar.class);
-        ParsingResult<String> result = new RecoveringParseRunner(parser.DataDefinition()).run(input);
+        ParsingResult<LineNode> result = new RecoveringParseRunner(parser.DataDefinition()).run(input);
         assert result.parseTreeRoot != null;
 //        System.out.println(input + " = " + result.parseTreeRoot.getValue() + '\n');
 //        System.out.println(printNodeTree(result) + '\n');
 
-        System.out.printf("\n\nGot %d Lines...value stack type is %s\n", result.valueStack.size(), result.valueStack.pop().getClass());
+        System.out.printf("\n\nLines: %d | stack type: %s |\n", result.valueStack.size(), result.valueStack.pop().getClass());
 
         TeiBuilder tei = new TeiBuilder(result.valueStack);
         tei.WriteFile("tmp.txt", tei.BuildOutput());
@@ -61,22 +64,22 @@ public class App {
 
 class TeiBuilder {
 
-    public ArrayList<String> lines;
-    public ValueStack<String> input;
+    public ArrayList<TextNode> lines;
+    public ValueStack<? extends TextNode> input;
 
-    public TeiBuilder(ValueStack<String> input) {
+    public TeiBuilder(ValueStack<? extends TextNode> input) {
         this.input = input;
-        this.lines = new ArrayList<String>();;
+        this.lines = new ArrayList<TextNode>();
     }
 
     private void reverseStackIntoLines() {
         while (this.input.iterator().hasNext()) {
             assert lines != null;
 
-            String s = this.input.pop().toString();
-            assert s != null;
+            TextNode n = this.input.pop();
+            assert n != null;
 
-            this.lines.add(0, s);
+            this.lines.add(0, n);
         }
     }
 
@@ -84,8 +87,8 @@ class TeiBuilder {
         StringBuilder sb = new StringBuilder("");
         this.reverseStackIntoLines();
         
-        for (String s : this.lines) {
-            sb.append(s);
+        for (TextNode n : this.lines) {
+            sb.append(n.getText());
         }
 
         return sb;

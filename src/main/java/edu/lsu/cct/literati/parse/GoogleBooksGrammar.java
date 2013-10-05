@@ -4,6 +4,7 @@
  */
 package edu.lsu.cct.literati.parse;
 
+import edu.lsu.cct.literati.parse.ast.LineNode;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.annotations.BuildParseTree;
@@ -89,7 +90,7 @@ public class GoogleBooksGrammar extends BaseParser<Object> {
     }
 
     Rule Lines() {
-        return OneOrMore(Line(), push(match()));
+        return OneOrMore(Line(), push(new LineNode(match())));
     }
 
     Rule Line() {

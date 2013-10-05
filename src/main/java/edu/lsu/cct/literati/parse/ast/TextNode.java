@@ -8,7 +8,7 @@ package edu.lsu.cct.literati.parse.ast;
  *
  * @author jpeak5
  */
-public class TextNode {
+public class TextNode extends Node{
     public String text;
     
     public TextNode(String text){
@@ -17,6 +17,5 @@ public class TextNode {
     
     public String getText(){
         return this.text;
-    }
-    
+    }   
 }

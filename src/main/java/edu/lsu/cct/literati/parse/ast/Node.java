@@ -4,20 +4,14 @@
  */
 package edu.lsu.cct.literati.parse.ast;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author jpeak5
  */
+
 public class Node<T> {
-    public ArrayList<T> children;
     
-    public <T> Node() {
-        
-    }
-    
-    public ArrayList<T> getChildren(){
-        return this.children;
+    public String toString(int indentFactor){
+        return super.toString();
     }
 }

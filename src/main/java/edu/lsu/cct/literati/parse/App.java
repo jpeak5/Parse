@@ -33,7 +33,7 @@ public class App {
                 readFile(args[0], Charset.forName("UTF-8")));
 
         GoogleBooksGrammar parser = Parboiled.createParser(GoogleBooksGrammar.class);
-        ParsingResult<LineNode> result = new RecoveringParseRunner(parser.DataDefinition()).run(input);
+        ParsingResult<Node> result = new RecoveringParseRunner(parser.DataDefinition()).run(input);
         assert result.parseTreeRoot != null;
 //        System.out.println(input + " = " + result.parseTreeRoot.getValue() + '\n');
 //        System.out.println(printNodeTree(result) + '\n');
@@ -64,19 +64,19 @@ public class App {
 
 class TeiBuilder {
 
-    public ArrayList<TextNode> lines;
-    public ValueStack<? extends TextNode> input;
+    public ArrayList<Node> lines;
+    public ValueStack<? extends Node> input;
 
-    public TeiBuilder(ValueStack<? extends TextNode> input) {
+    public TeiBuilder(ValueStack<? extends Node> input) {
         this.input = input;
-        this.lines = new ArrayList<TextNode>();
+        this.lines = new ArrayList<>();
     }
 
     private void reverseStackIntoLines() {
         while (this.input.iterator().hasNext()) {
             assert lines != null;
 
-            TextNode n = this.input.pop();
+            Node n = this.input.pop();
             assert n != null;
 
             this.lines.add(0, n);
@@ -87,8 +87,8 @@ class TeiBuilder {
         StringBuilder sb = new StringBuilder("");
         this.reverseStackIntoLines();
         
-        for (TextNode n : this.lines) {
-            sb.append(n.getText());
+        for (Node n : this.lines) {
+            sb.append(n.toString(0));
         }
 
         return sb;

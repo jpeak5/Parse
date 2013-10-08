@@ -4,14 +4,15 @@
  */
 package edu.lsu.cct.literati.parse.ast;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jpeak5
  */
-public class TextNode extends Node{
-    public String text;
+public class HeaderNode extends ParentNode<LineNode>{
     
-    public TextNode(String text){
-        this.text = text;
+    public HeaderNode(ArrayList<LineNode> children){
+        super(children);
     }
 }

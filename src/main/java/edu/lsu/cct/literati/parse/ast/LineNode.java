@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class LineNode extends TextNode{
 
     public int lineNumber;
-    public String text;
+//    public String text;
     
     public LineNode(String s){
         super(s);
@@ -24,10 +24,9 @@ public class LineNode extends TextNode{
         this.lineNumber = lineNum;
     }
 
+    @Override
     public String toString(int indentFactor) {
-        StringBuilder sb = new StringBuilder();
         IndentNode ind = new IndentNode(indentFactor);
-        
         return ind.toString() + this.getLineBreak(this.lineNumber) + this.text;
     }
 

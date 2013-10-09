@@ -20,7 +20,7 @@ public class HeaderLineNode extends LineNode {
     
     @Override
     public String toString(int indentFactor){
-        this.text = "<head>" + this.text + "</head>";
+        this.text = "<head>" + this.text + "</head>\n";
         return super.toString(indentFactor);
     }
     

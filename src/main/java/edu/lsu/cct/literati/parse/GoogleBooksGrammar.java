@@ -82,11 +82,11 @@ public class GoogleBooksGrammar extends BaseParser<Object> {
     }
     
     Rule JunkChars(){
-        return AnyOf("•—■^»«„*");
+        return AnyOf("•—■^»«„*®~");
     }
     
     Rule Punctuation() {
-        return AnyOf("=+-,/.;':\"()&%$#@!");
+        return AnyOf("\\=€+-,/.°;`'{}|_[]:\"()??£&%$#@!");
     }
     
     Rule Alpha() {
@@ -106,7 +106,7 @@ public class GoogleBooksGrammar extends BaseParser<Object> {
                 ));
     }
     
-    ParentNode guessLineType(String match) {
+    Node guessLineType(String match) {
 
         int upper = 0;
         int lower = 0;
@@ -126,35 +126,36 @@ public class GoogleBooksGrammar extends BaseParser<Object> {
                 other++;
             }
         }
-        System.out.printf("UC %d | lc %d | num %d\n", upper, lower, numbr);
+//        System.out.printf("UC %d | lc %d | num %d\n", upper, lower, numbr);
         boolean isnumeric = numbr > upper + lower + other;
         boolean isHeader  = (float)upper/(lower) > .5; //arbitrary mult
         
-        return isHeader ? consolidateConsequetiveHeaderNodes(match) : consolidateLines(match);
+        return isHeader ? new HeaderLineNode(match, lineCount++) : consolidateLines(match);
     }
     
 
-    HeaderNode consolidateConsequetiveHeaderNodes(String match){
-        ValueStack stack = getContext().getValueStack();
-        ArrayList<LineNode> hlns = new ArrayList<>();
-        
-        if(!stack.isEmpty()) {
-                if(stack.peek() instanceof BlankLineNode && stack.peek(1) instanceof HeaderNode) {
-                    
-                    //this is gross
-                    Object o0 = stack.pop();
-                    hlns.add(blankOrHeader(o0));
-                    
-                    Object o1 = stack.pop();
-                    hlns.add(blankOrHeader(o1));
-                    
-                }else if(stack.peek() instanceof HeaderNode){
-                    hlns.add((HeaderLineNode) stack.pop());
-                }
-        }
-        hlns.add(new HeaderLineNode(match, lineCount));
-        return new HeaderNode(hlns);
-    }
+//    HeaderNode consolidateConsequetiveHeaderNodes(String match){
+//        ValueStack stack = getContext().getValueStack();
+//        ArrayList<LineNode> hlns = new ArrayList<>();
+//        
+//        if(!stack.isEmpty()) {
+//
+//            while(stack.peek() instanceof BlankLineNode || stack.peek() instanceof HeaderNode){
+//                Object next = (Object) stack.pop();
+//                if(blankOrHeader(next) instanceof HeaderNode){
+//                    hlns.addAll(0, next.children);
+//                }else{
+//                hlns.add();
+//                }
+//            }
+//            hlns.add(new HeaderLineNode(match, lineCount++));
+//            return new HeaderNode(hlns);
+//        }
+//        
+//        hlns.add(new HeaderLineNode(match, lineCount++));
+//        return new HeaderNode(hlns);
+//    }
+
     
     public LineNode blankOrHeader(Object o){
         return o instanceof HeaderLineNode ? (HeaderLineNode) o : (BlankLineNode) o;
